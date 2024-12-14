@@ -18,7 +18,7 @@ class dataPreprocessing:
     et gérer un index FAISS avec métadonnées et indexation incrémentielle.
     """
 
-    def __init__(self, model_name="sentence-transformers/msmarco-distilbert-base-v3", index_file="faiss_index"):
+    def __init__(self, model_name="sentence-transformers/all-MiniLM-L12-v2", index_file="faiss_index"):
         """
         Initialise le modèle d'embedding et le fichier d'index FAISS.
         Args:
