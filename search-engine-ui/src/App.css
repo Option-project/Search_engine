@@ -1,0 +1,116 @@
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  background-color: #f8f9fc; /* Couleur de fond clair */
+  color: #333; /* Couleur principale du texte */
+  text-align: center;
+}
+
+.App-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  height: 100vh;
+  justify-content: center;
+}
+
+.logo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logo {
+  width: 80px;
+  height: 80px;
+}
+
+h1 {
+  font-size: 32px;
+  color: #333;
+  margin-top: 10px;
+}
+
+.search-container {
+  margin: 20px 0;
+  width: 100%;
+  max-width: 600px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 15px 20px;
+  font-size: 16px;
+  border: 2px solid #c3c4c7;
+  border-radius: 25px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: border-color 0.3s ease;
+}
+
+.search-input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.description {
+  font-size: 14px;
+  color: #555;
+  margin: 10px 0 20px;
+}
+
+.buttons-container {
+  display: flex;
+  gap: 10px;
+}
+
+.action-button {
+  padding: 10px 20px;
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.action-button:hover {
+  background-color: #0056b3;
+}
+
+.logo {
+  width: 80px; /* Largeur de l'image */
+  height: auto; /* Maintien des proportions */
+  margin-bottom: 10px; /* Espacement avec les autres éléments */
+  transition: transform 0.3s ease; /* Animation au survol */
+}
+
+.logo:hover {
+  transform: scale(1.1); /* Zoom léger au survol */
+}
+
+.navbar {
+  background-color: #333;
+  color: white;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.navbar a {
+  color: white;
+  text-decoration: none;
+  margin: 0 10px;
+}
+.navbar a:hover {
+  text-decoration: underline;
+}
+.searchBar {
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+}
