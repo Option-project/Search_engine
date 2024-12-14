@@ -11,7 +11,7 @@ from langchain_community.chat_models import ChatOllama
 from utils import get_pdf_text, get_text_chunks, get_vector_store, get_conversation_chain
 
 
-def conv():
+def conv(question):
     # get the extracted text from multiple pdfs
     pdf_docs = ['../data/CoursOptimisation.pdf']
     raw_text = get_pdf_text(pdf_docs)

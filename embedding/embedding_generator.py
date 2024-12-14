@@ -1,12 +1,12 @@
 import os
 import numpy as np
-from split_documents import split
-from load_pdf import load_pdf
-from load_docx import load_docx
-from load_email import load_email
-from load_ppt import load_ppt
-from load_csv import load_csv
-from load_webpage import load_web
+from Loading.split_documents import split
+from Loading.load_pdf import load_pdf
+from Loading.load_docx import load_docx
+from Loading.load_email import load_email
+from Loading.load_ppt import load_ppt
+from Loading.load_csv import load_csv
+from Loading.load_webpage import load_web
 from langchain.embeddings import HuggingFaceEmbeddings
 from langchain.vectorstores import FAISS
 import logging
