@@ -34,8 +34,13 @@ def get_text_chunks(text):
 
 
 def get_vector_store(chunks):
+
+    # Extract text content from the Document objects
+    texts = [chunk.page_content for chunk in chunks]
+
+
     embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
-    vectorstore = FAISS.from_texts(texts = chunks, embedding = embeddings)
+    vectorstore = FAISS.from_texts(texts = texts, embedding = embeddings)
     return vectorstore
 
 # create conversation chain

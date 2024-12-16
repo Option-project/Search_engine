@@ -1,23 +1,32 @@
+from llm.utils import get_vector_store, get_conversation_chain
+from Loading.load_and_chunk import load_chunk_files_from_directory
 from embedding.embedding_generator import dataPreprocessing
-from llm.utils import get_pdf_text, get_text_chunks, get_vector_store, get_conversation_chain
 import os
-def generate_answer(question):
-    # Path to the PDF file
-    folder_path = '../data'
-    pdf_docs = [
-        os.path.join(folder_path, file)
-        for file in os.listdir(folder_path)
-        if file.endswith('.pdf')
-    ]
 
-    # Extract text from the PDF
-    raw_text = get_pdf_text(pdf_docs)
+# Global variable to hold the vector store
+vector_store = None
 
-    # Split the text into chunks
-    text_chunks = get_text_chunks(raw_text)
+def create_vector_store():
+    """
+    Precomputes the vector store by processing documents in the given folder.
+    """
+    global vector_store
 
-    # Create the vector store
+
+    # Preprocess and chunk text
+    text_chunks = load_chunk_files_from_directory()
+
+    # Create and store the vector store globally
     vector_store = get_vector_store(text_chunks)
+
+def generate_answer(question):
+    """
+    Generates an answer using the existing vector store.
+    """
+    global vector_store
+
+    if vector_store is None:
+        raise RuntimeError("Vector store has not been created. Please call the /vector_store endpoint first.")
 
     # Create the conversation chain
     conversation = get_conversation_chain(vector_store)
