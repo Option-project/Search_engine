@@ -1,12 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
-import SearchBar from './components/SearchBar'; // Importation de SearchBar
-// Ajouter un hook useState pour gérer l'état de la réponse de l'API
-function App() {
-  const [answer, setAnswer] = useState(''); // Pour stocker la réponse de l'API
+import SearchBar from './components/SearchBar'; // Import SearchBar
 
-  // Fonction pour gérer la recherche et appeler l'API
+function App() {
+  const [answer, setAnswer] = useState(''); // To store the API response
+  const [vectorStoreInitialized, setVectorStoreInitialized] = useState(false); // Track vector store initialization
+
+  // Function to create the vector store on app load
+  const initializeVectorStore = async () => {
+    try {
+      const response = await fetch('http://localhost:8000/vector_store', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        setVectorStoreInitialized(true); // Mark the vector store as initialized
+      } else {
+        console.error('Error: Could not initialize vector store');
+      }
+    } catch (error) {
+      console.error('Error: Failed to initialize vector store', error);
+    }
+  };
+
+  // Function to handle search and call the `/query` endpoint
   const handleSearch = async (query) => {
+    if (!vectorStoreInitialized) {
+      setAnswer('Error: Vector store not initialized');
+      return;
+    }
+
     try {
       const response = await fetch('http://localhost:8000/query', {
         method: 'POST',
@@ -18,14 +44,20 @@ function App() {
 
       if (response.ok) {
         const data = await response.json();
-        setAnswer(data.answer); // Mettre à jour l'état avec la réponse
+        setAnswer(data.answer); // Update state with the response
       } else {
-        setAnswer('Error: Could not fetch answer'); // En cas d'erreur de l'API
+        setAnswer('Error: Could not fetch answer'); // API error
       }
     } catch (error) {
+      console.error('Error: Failed to fetch answer', error);
       setAnswer('Error: Failed to fetch answer');
     }
   };
+
+  // Initialize the vector store on component mount
+  useEffect(() => {
+    initializeVectorStore();
+  }, []); // Empty dependency array ensures this runs only once
 
   return (
     <div className="App">
@@ -35,10 +67,10 @@ function App() {
           <h1>Your SE</h1>
         </div>
         <div className="search-container">
-          {/* Utilisation de SearchBar et gestion de la recherche */}
+          {/* Using SearchBar and handling search */}
           <SearchBar onSearch={handleSearch} />
         </div>
-        {/* Affichage de la réponse de l'API */}
+        {/* Displaying the API response */}
         <div className="answer-container">
           <p>{answer}</p>
         </div>
