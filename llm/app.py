@@ -29,10 +29,6 @@ def conv(question):
     # create conversation chain
     conversation = get_conversation_chain(vector_store)
 
-
-    # Example
-    question = "What is this data science?"
-
     # Get the answer from the conversation chain
     try:
         answer = conversation.run(question)
@@ -44,9 +40,11 @@ def conv(question):
         return None
 
 
-# if __name__ == '__main__':
-#     # Call the main function
-#     final_answer = main()
-#     if final_answer:
-#         print("Final Answer:")
-#         print(final_answer)
+if __name__ == '__main__':
+    # Call the main function
+    # Example
+    question = "What is this data science?"
+    final_answer = conv(question)
+    if final_answer:
+        print("Final Answer:")
+        print(final_answer)

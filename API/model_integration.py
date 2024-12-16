@@ -1,4 +1,5 @@
 from embedding.embedding_generator import dataPreprocessing
+from llm.utils import get_pdf_text, get_text_chunks, get_vector_store, get_conversation_chain
 import os
 def generate_answer(question):
     # Path to the PDF file
@@ -10,13 +11,13 @@ def generate_answer(question):
     ]
 
     # Extract text from the PDF
-    raw_text = dataPreprocessing.load_file(pdf_docs)
+    raw_text = get_pdf_text(pdf_docs)
 
     # Split the text into chunks
-    text_chunks = dataPreprocessing.split_documents(raw_text)
+    text_chunks = get_text_chunks(raw_text)
 
     # Create the vector store
-    normalized_embeddings = dataPreprocessing.generate_embeddings(text_chunks)
+    vector_store = get_vector_store(text_chunks)
 
     # Create the conversation chain
     conversation = get_conversation_chain(vector_store)
