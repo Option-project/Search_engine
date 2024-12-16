@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
+import Navbar from './components/Navbar';
 import SearchBar from './components/SearchBar'; // Import SearchBar
+
 
 function App() {
   const [answer, setAnswer] = useState(''); // To store the API response
@@ -61,6 +63,7 @@ function App() {
 
   return (
     <div className="App">
+      <Navbar />
       <header className="App-header">
         <div className="logo-container">
           <img src="logo.png" alt="Logo" className="logo" />
