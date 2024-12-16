@@ -1,12 +1,13 @@
 import React from 'react';
 import './App.css';
-
+import Navbar from './components/Navbar';
 
 
 
 function App() {
   return (
     <div className="App">
+      <Navbar />
       <header className="App-header">
         <div className="logo-container">
           <img src="logo.png" alt="Logo" className="logo" />

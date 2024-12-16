@@ -1,37 +1,84 @@
+/* Style global */
 body {
   margin: 0;
   font-family: 'Arial', sans-serif;
-  background-color: #f8f9fc; /* Couleur de fond clair */
-  color: #333; /* Couleur principale du texte */
+  background-color: #ffffff; /* Fond blanc pour rester cohérent avec le logo */
+  color: #002b5c; /* Texte en bleu foncé pour correspondre au logo */
   text-align: center;
 }
 
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #002b5c; /* Fond bleu foncé */
+  padding: 10px 20px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.leftSide {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-logo1 {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+}
+
+.leftSide h1 {
+  font-size: 20px;
+  font-weight: bold;
+  color: #ffffff; /* Texte blanc pour contraste */
+  margin: 0;
+}
+
+.rightSide a {
+  margin-left: 20px;
+  text-decoration: none;
+  font-size: 16px;
+  color: #ffffff; /* Liens blancs pour cohérence avec le fond bleu */
+  transition: color 0.3s ease;
+}
+
+.rightSide a:hover {
+  color: #f26722; /* Liens orange au survol */
+}
+
+/* Header principal */
 .App-header {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   padding: 20px;
   height: 100vh;
-  justify-content: center;
+  background-color: #f8f9fc; /* Fond clair, légèrement gris */
 }
 
+/* Section du logo central */
 .logo-container {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-bottom: 20px;
 }
 
 .logo {
   width: 80px;
-  height: 80px;
+  height: auto;
+  margin-bottom: 10px;
 }
 
 h1 {
   font-size: 32px;
-  color: #333;
+  color: #002b5c; /* Titre en bleu foncé */
   margin-top: 10px;
 }
 
+/* Barre de recherche */
 .search-container {
   margin: 20px 0;
   width: 100%;
@@ -49,16 +96,18 @@ h1 {
 }
 
 .search-input:focus {
-  border-color: #007bff;
+  border-color: #f26722; /* Orange pour l'effet focus */
   outline: none;
 }
 
+/* Texte de description */
 .description {
   font-size: 14px;
   color: #555;
   margin: 10px 0 20px;
 }
 
+/* Conteneur des boutons */
 .buttons-container {
   display: flex;
   gap: 10px;
@@ -69,48 +118,12 @@ h1 {
   font-size: 14px;
   border: none;
   border-radius: 5px;
-  background-color: #007bff;
-  color: white;
+  background-color: #f26722; /* Boutons orange */
+  color: #ffffff; /* Texte blanc */
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
 .action-button:hover {
-  background-color: #0056b3;
-}
-
-.logo {
-  width: 80px; /* Largeur de l'image */
-  height: auto; /* Maintien des proportions */
-  margin-bottom: 10px; /* Espacement avec les autres éléments */
-  transition: transform 0.3s ease; /* Animation au survol */
-}
-
-.logo:hover {
-  transform: scale(1.1); /* Zoom léger au survol */
-}
-
-.navbar {
-  background-color: #333;
-  color: white;
-  padding: 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.navbar a {
-  color: white;
-  text-decoration: none;
-  margin: 0 10px;
-}
-.navbar a:hover {
-  text-decoration: underline;
-}
-.searchBar {
-  margin: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 80vh;
+  background-color: #d1541d; /* Orange plus foncé au survol */
 }

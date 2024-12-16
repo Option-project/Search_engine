@@ -1,11 +1,16 @@
 import React from 'react'
 
+
 function Navbar() {
     return (
       <div className="navbar">
+        {/* Section gauche avec logo et texte */}
         <div className="leftSide">
-          <h1>Your AI Search Engine</h1>
+          <img src="logo1.png" alt="Logo1" className="navbar-logo1" /> 
+          <h1>Your SE</h1>
         </div>
+
+        {/* Section droite avec les liens */}
         <div className="rightSide">
           <a href="#Search History">Search History</a>
           <a href="#Your Profile">Your Profile</a>
@@ -13,6 +18,6 @@ function Navbar() {
         </div>
       </div>
     );
-  }
-  
-  export default Navbar;
+}
+
+export default Navbar;
