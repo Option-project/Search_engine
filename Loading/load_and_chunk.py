@@ -4,6 +4,7 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.schema import Document
 import pytesseract
 from Loading.ocr_to_text_file import parse_image
+from Loading.audio_to_text_file import transcribe_audio
 
 def load_chunk_files_from_directory():
     directory_path = "data"
@@ -30,6 +31,11 @@ def load_chunk_files_from_directory():
             output_path = filename + ".txt"
             print(output_path)
             parse_image(file_path, pytesseract_path, output_path)
+            loader = TextLoader(output_path)
+
+        elif file_extension in [".mp3", ".wav"] :
+            output_path = filename + ".txt"
+            transcribe_audio(file_path, output_path)
             loader = TextLoader(output_path)
         else:
             print(f"Unsupported file type: {file_extension}. Skipping file: {file_name}")
