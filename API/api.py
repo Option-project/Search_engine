@@ -1,10 +1,11 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
-from API.model_integration import generate_answer, create_vector_store  # Import updated functions
+from API.model_integration_streamlit import generate_answer, create_vector_store  # Import updated functions
 
 # Initialize the FastAPI application
 app = FastAPI()
+
 
 # Add CORS middleware
 app.add_middleware(

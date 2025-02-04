@@ -1,6 +1,6 @@
-from llm.utils import get_vector_store
+from llm.utils import get_vector_store, get_conversation_chain
 from Loading.load_and_chunk import load_chunk_files_from_directory
-from huggingface_hub import InferenceClient
+from embedding.embedding_generator import dataPreprocessing
 import os
 
 # Global variable to hold the vector store
@@ -51,12 +51,6 @@ def generate_answer(question: str) -> str:
     )
     formatted_prompt = prompt_template.format(context=context, question=question)
 
-    # Construct the messages payload
-    messages = [{"role": "user", "content": formatted_prompt}]
-
-    # Generate response using streaming
-    response = ""
-    for token in client.chat_completion(messages, max_tokens=150, stream=True):
-        response += token.choices[0].delta.content
-
-    return response.strip()
+    # Get the answer from the conversation chain
+    simulated_answer = conversation.run(question)
+    return simulated_answer
