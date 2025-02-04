@@ -1,0 +1,50 @@
+Résumé :
+Caractéristiques
+
+Objectif
+Exemple de
+sortie
+Variable cible
+
+Métriques
+
+Modéles
+
+Régression
+
+Prédire une valeur
+
+continue
+
+Prédire le prix d'une
+
+maison
+
+Continue (ex. : nombre
+
+réel)
+
+MSE, RMSE, MAE, R?
+
+Régression linéaire,
+
+régression polynomiale
+
+Classification
+
+Prédire une classe ou étiquette
+
+Prédire si un email est spam ou
+
+non-spam
+
+Discréte (ex. : 0, 1, ou plusieurs
+
+classes)
+
+Précision, rappel, F1-score,
+
+matrice de confusion
+
+Régression logistique, SVM,
+KNN, arbres de décision
