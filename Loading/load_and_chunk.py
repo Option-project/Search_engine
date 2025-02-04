@@ -4,10 +4,11 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.schema import Document
 import pytesseract
 from Loading.ocr_to_text_file import parse_image
-
+import sys
+sys.path.insert(0, '..')
 def load_chunk_files_from_directory():
-    directory_path = "data"
-    pytesseract_path = r'C:/Program Files/Tesseract-OCR/tesseract.exe' #You should install tessetact and include its path here
+    directory_path = "/Users/nadadroussi/Desktop/Search_engine/data"
+    pytesseract_path = r'/opt/homebrew/bin/tesseract' #You should install tessetact and include its path here
     documents = []
     for file_name in os.listdir(directory_path):
         file_path = os.path.join(directory_path, file_name)
@@ -41,16 +42,6 @@ def load_chunk_files_from_directory():
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100) # Modify the chunk_size and chunk_overlap
 
     chunks = text_splitter.split_documents(documents)
-
-
-    # Split text using split_text
-    #chunks = []
-    #for doc in documents:
-        #text_chunks = text_splitter.split_text(doc.page_content)  # Split the raw text
-        #for chunk in text_chunks:
-            # Optionally reassemble as Document objects
-            #chunks.append(Document(page_content=chunk, metadata=doc.metadata))
-
 
 
     return chunks

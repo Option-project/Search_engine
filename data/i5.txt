@@ -1,5 +1,5 @@
-KNN Decision Tree Geter
-Logistic svM =
+KNN Decision Tree Linear
+Togitte svM =
 
 Regression
 
@@ -9,8 +9,8 @@ Polynomial
 Regression k-Means
 Ridge
 
-Fuzzy C-Means priori
-Mean-Shift ECLAT.
+Fuzzy C-Means priori:
+Mean-Shift ECLAT-
 
 feats || meres | [cng] | ren |
 
@@ -19,7 +19,7 @@ DBSCAN
 
 LightGBM
 
-> 1 Dimen:
+7 1 Dimen:
 Redicution
 Gradient
 Boost F
@@ -33,9 +33,9 @@ Q-Learning Took Oo :tesworis
 A3C SARSA
 Genetic Algorithm
 
-‘i Z Generative
+i g Generative
 Multilayer
-Perceptron (MLP) carats (ou
+Perceptron (MLP) : NGA ii
 
 Radial Basis
 Function Networks

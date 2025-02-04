@@ -1,50 +1,50 @@
-Résumé :
-Caractéristiques
+RÃ©sumÃ© :
+CaractÃ©ristiques
 
 Objectif
 Exemple de
 sortie
 Variable cible
 
-Métriques
+MÃ©triques
 
-Modéles
+ModÃ©les
 
-Régression
+RÃ©gression
 
-Prédire une valeur
+PrÃ©dire une valeur
 
 continue
 
-Prédire le prix d'une
+PrÃ©dire le prix d'une
 
 maison
 
 Continue (ex. : nombre
 
-réel)
+rÃ©el)
 
 MSE, RMSE, MAE, R?
 
-Régression linéaire,
+RÃ©gression linÃ©aire,
 
-régression polynomiale
+rÃ©gression polynomiale
 
 Classification
 
-Prédire une classe ou étiquette
+PrÃ©dire une classe ou Ã©tiquette
 
-Prédire si un email est spam ou
+PrÃ©dire si un email est spam ou
 
 non-spam
 
-Discréte (ex. : 0, 1, ou plusieurs
+DiscrÃ©te (ex. : 0, 1, ou plusieurs
 
 classes)
 
-Précision, rappel, F1-score,
+PrÃ©cision, rappel, F1-score,
 
 matrice de confusion
 
-Régression logistique, SVM,
-KNN, arbres de décision
+RÃ©gression logistique, SVM,
+KNN, arbres de dÃ©cision
