@@ -1,0 +1,51 @@
+KNN Decision Tree Geter
+Logistic svM =
+
+Regression
+
+Naive Bayes.
+
+Polynomial
+Regression k-Means
+Ridge
+
+Fuzzy C-Means priori
+Mean-Shift ECLAT.
+
+feats || meres | [cng] | ren |
+
+FP-Growth
+DBSCAN
+
+LightGBM
+
+> 1 Dimen:
+Redicution
+Gradient
+Boost F
+Random Forest
+
+MACHINE
+LEARNING
+
+Q-Learning Took Oo :tesworis
+
+A3C SARSA
+Genetic Algorithm
+
+‘i Z Generative
+Multilayer
+Perceptron (MLP) carats (ou
+
+Radial Basis
+Function Networks
+
+Transformers
+Recurrent Neural
+
+Networks (RNN)
+
+Convolutional
+Neural Networks Autoencoders
+(CNN)
+

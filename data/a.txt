@@ -1,0 +1,2 @@
+FINTAGORA technolasy is.a an ai technology that extracts financial documents and processes,
+them based on their source, ituses multiple ai models such as XGBOOST|
