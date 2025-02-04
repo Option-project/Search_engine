@@ -1,5 +1,5 @@
 import streamlit as st
-from API.model_integration_streamlit import generate_answer, create_vector_store
+from model_integration_streamlit import generate_answer, create_vector_store
 import sentence_transformers
 print(sentence_transformers.__version__)
 
