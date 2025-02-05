@@ -3,16 +3,15 @@ from langchain_community.document_loaders import PyMuPDFLoader, WebBaseLoader, T
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.schema import Document
 import pytesseract
+import sys
+sys.path.insert(0, 'C:/Users/User/Desktop/Search_engine')
 from Loading.ocr_to_text_file import parse_image
 from Loading.audio_to_text_file import transcribe_audio
 
-=======
-import sys
-sys.path.insert(0, 'C:/Users/User/Desktop/Search_engine')
->>>>>>> origin/main
+
 def load_chunk_files_from_directory():
     directory_path = "C:/Users/User/Desktop/Search_engine"
-    pytesseract_path = r'/opt/homebrew/bin/tesseract' #You should install tessetact and include its path here
+    pytesseract_path = r'C:/Program Files/Tesseract-OCR/tesseract.exe' #You should install tessetact and include its path here
     documents = []
     for file_name in os.listdir(directory_path):
         file_path = os.path.join(directory_path, file_name)
