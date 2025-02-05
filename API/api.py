@@ -1,63 +1,50 @@
-from fastapi import FastAPI, HTTPException
+from model_integration import IntegratedRAGService
+from fastapi import FastAPI, BackgroundTasks
 from pydantic import BaseModel
-from fastapi.middleware.cors import CORSMiddleware
-from API.model_integration_streamlit import generate_answer, create_vector_store  # Import updated functions
 
-# Initialize the FastAPI application
+
+
+class Question(BaseModel):
+    text: str
+
 app = FastAPI()
 
 
-# Add CORS middleware
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # You can restrict this to specific domains
-    allow_credentials=True,
-    allow_methods=["*"],  # Allow all HTTP methods
-    allow_headers=["*"],  # Allow all headers
-)
+# Create a global service instance
+rag_service = IntegratedRAGService()
 
-# Define the input data model for the query endpoint
-class QueryRequest(BaseModel):
-    question: str  # The question input by the user
 
-# Define the response data model for the query endpoint
-class QueryResponse(BaseModel):
-    answer: str  # The generated answer from the model
+@app.post("/start_monitoring")
+async def start_monitoring():
+    """Start monitoring Google Drive for changes."""
+    rag_service.start_monitoring()
+    return {"message": "Monitoring started successfully"}
 
-# Define the response data model for the vector store creation endpoint
-class VectorStoreResponse(BaseModel):
-    message: str  # Success or error message
+@app.post("/stop_monitoring")
+async def stop_monitoring():
+    """Stop monitoring Google Drive for changes."""
+    rag_service.stop_monitoring()
+    return {"message": "Monitoring stopped successfully"}
 
-# Define the API endpoint for generating answers
-@app.post("/query", response_model=QueryResponse)
-async def get_answer(query: QueryRequest):
-    """
-    Takes the question and returns the answer
-    """
+@app.post("/ask")
+async def ask_question(question: Question):
+    """Ask a question to the RAG system."""
     try:
-        # Call the model integration to generate an answer
-        answer = generate_answer(query.question)
-        return QueryResponse(answer=answer)
+        answer = rag_service.generate_answer(question.text)
+        return {"answer": answer}
     except RuntimeError as e:
-        # If the vector store has not been created
-        raise HTTPException(status_code=400, detail=str(e))
-    except Exception as e:
-        # If another error occurs, return a 500 error
-        raise HTTPException(status_code=500, detail="Error generating answer")
+        return {"error": str(e)}
 
-# Define the API endpoint for creating the vector store
-@app.post("/vector_store", response_model=VectorStoreResponse)
-async def create_vector_store_endpoint():
-    """
-    Preprocesses documents and creates the vector store
-    """
-    try:
-        # Call the function to create a vector store
-        create_vector_store()
-        return VectorStoreResponse(message="Vector store created successfully.")
-    except ValueError as e:
-        # If an error occurs during preprocessing or chunking
-        raise HTTPException(status_code=400, detail=str(e))
-    except Exception as e:
-        # If another error occurs, return a 500 error
-        raise HTTPException(status_code=500, detail=f"Error creating vector store: {str(e)}")
+@app.get("/status")
+async def get_status():
+    """Get the current status of the RAG system."""
+    return {
+        "is_monitoring": rag_service.is_monitoring,
+        "vector_store_exists": rag_service.vector_store is not None,
+        "known_files_count": len(rag_service.known_files),
+        "last_update": rag_service.last_update_time.isoformat() if rag_service.last_update_time else None
+    }
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)

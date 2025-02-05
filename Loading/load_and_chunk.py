@@ -3,12 +3,15 @@ from langchain_community.document_loaders import PyMuPDFLoader, WebBaseLoader, T
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.schema import Document
 import pytesseract
-from Loading.ocr_to_text_file import parse_image
 import sys
-sys.path.insert(0, '..')
+sys.path.insert(0, 'C:/Users/User/Desktop/Search_engine')
+from Loading.ocr_to_text_file import parse_image
+from Loading.audio_to_text_file import transcribe_audio
+
+
 def load_chunk_files_from_directory():
-    directory_path = "/Users/nadadroussi/Desktop/Search_engine/data"
-    pytesseract_path = r'/opt/homebrew/bin/tesseract' #You should install tessetact and include its path here
+    directory_path = "C:/Users/User/Desktop/Search_engine"
+    pytesseract_path = r'C:/Program Files/Tesseract-OCR/tesseract.exe' #You should install tessetact and include its path here
     documents = []
     for file_name in os.listdir(directory_path):
         file_path = os.path.join(directory_path, file_name)
@@ -32,6 +35,11 @@ def load_chunk_files_from_directory():
             print(output_path)
             parse_image(file_path, pytesseract_path, output_path)
             loader = TextLoader(output_path)
+
+        elif file_extension in [".mp3", ".wav"] :
+            output_path = filename + ".txt"
+            transcribe_audio(file_path, output_path)
+            loader = TextLoader(output_path)
         else:
             print(f"Unsupported file type: {file_extension}. Skipping file: {file_name}")
             continue
@@ -46,8 +54,3 @@ def load_chunk_files_from_directory():
 
     return chunks
 
-
-#chunks = load_chunk_files_from_directory()
-#for chunk in chunks:
-    #print(chunk)
-    #print("-----------------------")
