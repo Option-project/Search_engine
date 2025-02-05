@@ -1,0 +1,27 @@
+Noor Model
+
+Largest language model for Arabic in the world
+
+The Noor project expands upon the existing Arabic models, nN ie) (e) cr
+introducing 1.3B, 2.7B, 6.7B and 13B models. Therefore, Noor-13B is
+the largest NLP model for Arabic in the world.
+
+POTS Arabic models Similar architecture to GPT-3
+
++ AraBERT eee Light®n
+T Institute We bring Light to Ai
++ hULMonA
++ ARAGPT-2: 1.47B parameters |
++ AraTS
++ 2 3 ‘ 6
+Source of data Quality Number of tokens (GTokens} Duplication Total tokens
++ Noor is trained in self-supervision fashion to predict the next token Coamnog crawl Ter % ' *
+= Diversifi ArabWebl6 tow 7 1 7
+Diversified sources of text: News, Government, Poetry, Crawl OpenSubsitles Medium aie ; on
+3 3 2
+* One epoch for training ’ ‘5 2 ‘0
+Books High ou 4 04
+Protraining datasets High 06 2 12
+A Arabic is encoded in two bytes = « 8
+
+TU Technology Innovation Institule Al Cross Unit Research Cer

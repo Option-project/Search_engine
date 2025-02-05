@@ -1,13 +1,11 @@
-import streamlit as st
 from dotenv import load_dotenv
 from PyPDF2 import PdfReader
-import os
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationalRetrievalChain
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
-from langchain_community.chat_models import ChatOllama
+from langchain_ollama import ChatOllama
 
 load_dotenv()
 
@@ -35,9 +33,7 @@ def get_text_chunks(text):
 
 def get_vector_store(chunks):
 
-    # Extract text content from the Document objects
     texts = [chunk.page_content for chunk in chunks]
-
 
     embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
     vectorstore = FAISS.from_texts(texts = texts, embedding = embeddings)
@@ -45,7 +41,7 @@ def get_vector_store(chunks):
 
 # create conversation chain
 def get_conversation_chain(vectorstore):
-    llm = ChatOllama(model_name="llama2:latest", temperature=0)
+    llm = ChatOllama(model="llama2:latest", temperature=0)
 
     memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
 
@@ -56,4 +52,5 @@ def get_conversation_chain(vectorstore):
     )
     return conversation_chain
 
-    
+
+

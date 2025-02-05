@@ -1,0 +1,51 @@
+KNN Decision Tree Linear
+Togitte svM =
+
+Regression
+
+Naive Bayes.
+
+Polynomial
+Regression k-Means
+Ridge
+
+Fuzzy C-Means priori:
+Mean-Shift ECLAT-
+
+feats || meres | [cng] | ren |
+
+FP-Growth
+DBSCAN
+
+LightGBM
+
+7 1 Dimen:
+Redicution
+Gradient
+Boost F
+Random Forest
+
+MACHINE
+LEARNING
+
+Q-Learning Took Oo :tesworis
+
+A3C SARSA
+Genetic Algorithm
+
+i g Generative
+Multilayer
+Perceptron (MLP) : NGA ii
+
+Radial Basis
+Function Networks
+
+Transformers
+Recurrent Neural
+
+Networks (RNN)
+
+Convolutional
+Neural Networks Autoencoders
+(CNN)
+

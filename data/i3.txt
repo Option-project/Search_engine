@@ -1,0 +1,27 @@
+#2) Fine-tuning
+
+F . °,
+J Fine-tuning ENS blog. DailyDoseofDS.com
+
+<-> Gradient flow
+
+Fine
+
+@ Full pre-trained
+Tuning
+
+network
+
+7 @
+
+O Appended network
+
+Fine-tuning involves updating the weights of some or all layers of the pre-trained
+
+model to adapt it to the new task.
+
+The idea may appear similar to transfer learning, but in fine-tuning, we typically
+
+do not replace the last few layers of the pre-trained network.
+
+Instead, the pretrained model itself is adjusted to the new data.

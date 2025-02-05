@@ -1,25 +1,12 @@
-import streamlit as st
-from dotenv import load_dotenv
-from PyPDF2 import PdfReader
-import os
-from langchain.text_splitter import CharacterTextSplitter
-from langchain.memory import ConversationBufferMemory
-from langchain.chains import ConversationalRetrievalChain
-from langchain_community.embeddings import HuggingFaceEmbeddings
-from langchain_community.vectorstores import FAISS
-from langchain_community.chat_models import ChatOllama
 from utils import get_pdf_text, get_text_chunks, get_vector_store, get_conversation_chain
-
+import sys
+sys.path.insert(0, '/Users/nadadroussi/Desktop/Search_engine')
+from Loading.load_and_chunk import load_chunk_files_from_directory
 
 def conv(question):
-    # get the extracted text from multiple pdfs
-    pdf_docs = ['../data/CoursOptimisation.pdf']
-    raw_text = get_pdf_text(pdf_docs)
-    # print(raw_text)
 
 
-    # get the text chunks
-    text_chunks = get_text_chunks(raw_text)
+    text_chunks = load_chunk_files_from_directory()
     # print(text_chunks)
 
 
