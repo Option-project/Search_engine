@@ -21,3 +21,4 @@ langchain-groq
 langchain_core
 PyPDF2
 python-dotenv
+openai-whisper

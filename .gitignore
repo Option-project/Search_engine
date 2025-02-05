@@ -3,4 +3,8 @@ seenv/
 aivenv/
 tests
 venv
+<<<<<<< Updated upstream
 sadtest.ipynb
+=======
+google_drive_integration
+>>>>>>> Stashed changes
