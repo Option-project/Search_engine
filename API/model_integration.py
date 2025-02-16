@@ -1,25 +1,34 @@
 import sys
-sys.path.insert(0, 'C:/Users/User/Desktop/Search_engine')
-
+import os 
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 import threading
 from typing import Optional, List
-import os
 import time
 from datetime import datetime, timezone
 from googleapiclient.discovery import build
 from oauth2client.service_account import ServiceAccountCredentials
-from langchain_community.document_loaders import PyMuPDFLoader, WebBaseLoader, TextLoader, UnstructuredPowerPointLoader, UnstructuredEmailLoader, Docx2txtLoader, CSVLoader
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+import fitz  # PyMuPDF
+import pandas as pd
+import pytesseract
+from PIL import Image
+import email
+from email import policy
+from bs4 import BeautifulSoup
+import spacy
+from sentence_transformers import SentenceTransformer, util
+from dataclasses import dataclass
+from huggingface_hub import InferenceClient
 from langchain.schema import Document
 from llm.utils import get_vector_store, get_conversation_chain
-import pytesseract
-from Loading.ocr_to_text_file import parse_image
-from Loading.audio_to_text_file import transcribe_audio
-from huggingface_hub import InferenceClient
 
+# Initialisation des modèles NLP
+nlp = spacy.load("en_core_web_sm")
+embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
 
-
-
+@dataclass
+class Document:
+    page_content: str
+    metadata: dict
 
 class IntegratedRAGService:
     def __init__(self, local_data_dir="data", check_interval=60):
@@ -32,6 +41,8 @@ class IntegratedRAGService:
         self.known_files = set()
         self.last_update_time = None
         
+        # Configuration Tesseract OCR
+        pytesseract.pytesseract.tesseract_cmd = r'C:/Program Files/Tesseract-OCR/tesseract.exe'
 
         # Initialize the Hugging Face client
         self.client = InferenceClient("meta-llama/Meta-Llama-3-8B-Instruct")
@@ -88,42 +99,111 @@ class IntegratedRAGService:
             print(f"Error downloading file {file_name}: {str(e)}")
             return None
 
+    def semantic_chunking(self, text, metadata, similarity_threshold=0.75):
+        doc = nlp(text)
+        sentences = [sent.text for sent in doc.sents]
+
+        embeddings = embedding_model.encode(sentences)
+
+        chunks = []
+        current_chunk = [sentences[0]]
+        for i in range(1, len(sentences)):
+            similarity = util.cos_sim(embeddings[i], embeddings[i-1])[0][0]
+            if similarity >= similarity_threshold:
+                current_chunk.append(sentences[i])
+            else:
+                chunks.append(Document(
+                    page_content=" ".join(current_chunk),
+                    metadata=metadata
+                ))
+                current_chunk = [sentences[i]]
+
+        if current_chunk:
+            chunks.append(Document(
+                page_content=" ".join(current_chunk),
+                metadata=metadata
+            ))
+
+        return chunks
+
+    def extract_text_from_pdf(self, pdf_path):
+        text = ""
+        with fitz.open(pdf_path) as doc:
+            for page in doc:
+                text += page.get_text() + "\n"
+        return text
+
+    def extract_text_from_csv(self, csv_path):
+        df = pd.read_csv(csv_path)
+        return df.to_string(index=False)
+
+    def extract_text_from_eml(self, eml_path):
+        with open(eml_path, "r", encoding="utf-8") as f:
+            msg = email.message_from_file(f, policy=policy.default)
+        
+        text = f"Subject: {msg['subject']}\nFrom: {msg['from']}\nTo: {msg['to']}\n\n"
+        
+        for part in msg.walk():
+            if part.get_content_type() == "text/plain":
+                text += part.get_payload(decode=True).decode("utf-8", errors="ignore")
+            elif part.get_content_type() == "text/html":
+                soup = BeautifulSoup(part.get_payload(decode=True), "html.parser")
+                text += soup.get_text()
+        
+        return text
+
+    def extract_text_from_image(self, image_path):
+        image = Image.open(image_path)
+        text = pytesseract.image_to_string(image)
+        return text
+
+    def chunk_pdf(self, text, metadata):
+        sections = text.split("\n\n")  # Découpage par paragraphes
+        return self.semantic_chunking(" ".join(sections), metadata)
+
+    def chunk_csv(self, text, metadata):
+        rows = text.split("\n")  # Découpage par lignes
+        return self.semantic_chunking(" ".join(rows), metadata)
+
+    def chunk_email(self, text, metadata):
+        topic_sections = text.split("\n\n")  # Découpage par blocs de texte
+        return self.semantic_chunking(" ".join(topic_sections), metadata)
+
+    def chunk_image(self, text, metadata):
+        paragraphs = text.split("\n\n")  # Découpage par paragraphes détectés
+        return self.semantic_chunking(" ".join(paragraphs), metadata)
+
     def process_file(self, file_path):
         if not file_path:
             return None
             
         file_extension = os.path.splitext(file_path)[1].lower()
-        filename = os.path.splitext(file_path)[0].lower()
-        documents = []
+        metadata = {
+            "source": file_path,
+            "file_type": file_extension[1:],
+            "file_name": os.path.basename(file_path)
+        }
 
         try:
-            if file_extension == ".txt":
-                loader = TextLoader(file_path)
-            elif file_extension == ".pdf":
-                loader = PyMuPDFLoader(file_path)
-            elif file_extension == ".docx":
-                loader = Docx2txtLoader(file_path)
+            if file_extension == ".pdf":
+                text = self.extract_text_from_pdf(file_path)
+                return self.chunk_pdf(text, metadata)
+            
             elif file_extension == ".csv":
-                loader = CSVLoader(file_path)
+                text = self.extract_text_from_csv(file_path)
+                return self.chunk_csv(text, metadata)
+            
             elif file_extension == ".eml":
-                loader = UnstructuredEmailLoader(file_path)
+                text = self.extract_text_from_eml(file_path)
+                return self.chunk_email(text, metadata)
+            
             elif file_extension in [".png", ".jpg", ".jpeg"]:
-                output_path = filename + ".txt"
-                pytesseract_path = r'C:/Program Files/Tesseract-OCR/tesseract.exe'
-                parse_image(file_path, pytesseract_path, output_path)
-                loader = TextLoader(output_path)
-            elif file_extension in [".mp3", ".wav"]:
-                output_path = filename + ".txt"
-                transcribe_audio(file_path, output_path)
-                loader = TextLoader(output_path)
+                text = self.extract_text_from_image(file_path)
+                return self.chunk_image(text, metadata)
+            
             else:
                 print(f"Unsupported file type: {file_extension}. Skipping file: {file_path}")
                 return None
-
-            documents.extend(loader.load())
-            text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
-            chunks = text_splitter.split_documents(documents)
-            return chunks
 
         except Exception as e:
             print(f"Error processing file {file_path}: {str(e)}")
@@ -193,7 +273,6 @@ class IntegratedRAGService:
         if self.monitoring_thread:
             self.monitoring_thread.join()
 
-
     def generate_answer(self, question: str) -> str:
         """
         Generates an answer to the given question using Meta-Llama-3-8B-Instruct and vector store retrieval.
@@ -238,3 +317,4 @@ Question: {question}
         )
         
         return response.strip()
+
