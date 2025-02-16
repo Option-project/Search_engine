@@ -20,6 +20,7 @@ from dataclasses import dataclass
 from huggingface_hub import InferenceClient
 from langchain.schema import Document
 from llm.utils import get_vector_store, get_conversation_chain
+from Loading.audio_to_text_file import transcribe_audio
 
 # Initialisation des modèles NLP
 nlp = spacy.load("en_core_web_sm")
@@ -156,6 +157,11 @@ class IntegratedRAGService:
         image = Image.open(image_path)
         text = pytesseract.image_to_string(image)
         return text
+    
+    def extract_text_from_audio(self, audio_path):
+        text = transcribe_audio(audio_path)
+        return text
+    
 
     def chunk_pdf(self, text, metadata):
         sections = text.split("\n\n")  # Découpage par paragraphes
@@ -172,6 +178,18 @@ class IntegratedRAGService:
     def chunk_image(self, text, metadata):
         paragraphs = text.split("\n\n")  # Découpage par paragraphes détectés
         return self.semantic_chunking(" ".join(paragraphs), metadata)
+    
+    def chunk_audio(self, text, metadata):
+        paragraphs = text.split("\n\n")  # Découpage par paragraphes détectés
+        return self.semantic_chunking(" ".join(paragraphs), metadata)
+    
+    def chunk_txt(self, text, metadata):
+        topic_sections = text.split("\n\n")  # Découpage par blocs de texte
+        return self.semantic_chunking(" ".join(topic_sections), metadata)
+    
+    def chunk_docx(self, text, metadata):
+        sections = text.split("\n\n")  # Découpage par paragraphes
+        return self.semantic_chunking(" ".join(sections), metadata)
 
     def process_file(self, file_path):
         if not file_path:
@@ -200,6 +218,18 @@ class IntegratedRAGService:
             elif file_extension in [".png", ".jpg", ".jpeg"]:
                 text = self.extract_text_from_image(file_path)
                 return self.chunk_image(text, metadata)
+            
+            elif file_extension in [".mp3", ".wav"]:
+                text = self.extract_text_from_audio(file_path)
+                return self.chunk_audio(text, metadata)
+            
+            elif file_extension == ".txt":
+                text = self.extract_text_from_pdf(file_path)
+                return self.chunk_txt(text, metadata)
+            
+            elif file_extension == ".docx":
+                text = self.extract_text_from_pdf(file_path)
+                return self.chunk_docx(text, metadata)
             
             else:
                 print(f"Unsupported file type: {file_extension}. Skipping file: {file_path}")
