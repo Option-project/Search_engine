@@ -3,7 +3,7 @@ from PIL import Image
 import pytesseract
 
 # If you don't have tesseract executable in your PATH, include the following:
-pytesseract.pytesseract.tesseract_cmd = r''
+pytesseract.pytesseract.tesseract_cmd = r'/usr/local/bin/tesseract'
 # Example tesseract_cmd = r'C:\Program Files (x86)\Tesseract-OCR\tesseract'
 
 
@@ -13,3 +13,4 @@ def parse_image(image_path, pytesseract_path, output_path) :
 
     with open(output_path, 'w') as file:
         file.write(text)
+    return text

@@ -23,7 +23,7 @@ from llm.utils import get_vector_store, get_conversation_chain
 from Loading.audio_to_text_file import transcribe_audio
 
 # Initialisation des modèles NLP
-nlp = spacy.load("en_core_web_sm")
+nlp = spacy.load("en_core_web_trf")
 embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
 
 @dataclass
@@ -43,16 +43,16 @@ class IntegratedRAGService:
         self.last_update_time = None
         
         # Configuration Tesseract OCR
-        pytesseract.pytesseract.tesseract_cmd = r'C:/Program Files/Tesseract-OCR/tesseract.exe'
+        pytesseract.pytesseract.tesseract_cmd =  r'/opt/homebrew/bin/tesseract'
 
         # Initialize the Hugging Face client
-        self.client = InferenceClient("meta-llama/Meta-Llama-3-8B-Instruct")
+        self.client = InferenceClient("mistralai/Mistral-7B-Instruct-v0.3", token="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")
 
         # Ensure data directory exists
         os.makedirs(local_data_dir, exist_ok=True)
         
         # Initialize Google Drive service
-        _credential_path = 'C:/Users/User/Desktop/Search_engine/google_drive_integration/credential.json'
+        _credential_path = 'google_drive_integration/credential.json'
         os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = _credential_path
         self.service = self._build_service()
 
@@ -159,10 +159,10 @@ class IntegratedRAGService:
         return text
     
     def extract_text_from_audio(self, audio_path):
-        text = transcribe_audio(audio_path)
+        output_path = audio_path + '.transcript.txt'
+        text = transcribe_audio(audio_path, output_path)
         return text
     
-
     def chunk_pdf(self, text, metadata):
         sections = text.split("\n\n")  # Découpage par paragraphes
         return self.semantic_chunking(" ".join(sections), metadata)
