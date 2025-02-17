@@ -46,7 +46,7 @@ class IntegratedRAGService:
         pytesseract.pytesseract.tesseract_cmd =  r'/opt/homebrew/bin/tesseract'
 
         # Initialize the Hugging Face client
-        self.client = InferenceClient("mistralai/Mistral-7B-Instruct-v0.3", token="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")
+        self.client = InferenceClient("mistralai/Mistral-7B-Instruct-v0.3")
 
         # Ensure data directory exists
         os.makedirs(local_data_dir, exist_ok=True)
